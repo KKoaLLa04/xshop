@@ -19,7 +19,7 @@ if (isPost()) {
         } else {
             // Truy van co so du lieu bang client
             $email = trim($body['email']);
-            $listClient = getRows("SELECT * FROM client WHERE email='$email'");
+            $listClient = clientEmail($email);
             if ($listClient > 0) {
                 $errors['email'] = 'Email đã tồn tại, vui lòng thử lại email khác';
             }
@@ -73,7 +73,7 @@ $error = getFlashData('errors');
 ?>
 <div class="row2">
     <div class="row2 font_title">
-        <h1>THÊM MỚI LOẠI HÀNG HÓA</h1>
+        <h1>THÊM QUẢN TRỊ VIÊN MỚI</h1>
     </div>
     <div class="row2 form_content ">
         <br>
@@ -84,15 +84,13 @@ $error = getFlashData('errors');
                 <div class="col-6">
                     <div class="form-group">
                         <label> Mã QTV </label>
-                        <input type="text" name="id" placeholder="nhập vào mã loại" class="form-control"
-                            value="<?php echo oldData('id', $old) ?>" disabled>
+                        <input type="text" name="id" placeholder="nhập vào mã loại" class="form-control" value="<?php echo oldData('id', $old) ?>" disabled>
                         <p></p>
                     </div>
 
                     <div class="form-group">
                         <label for="">Tên QTV</label>
-                        <input type="text" name="fullname" class="form-control" placeholder="Tên quản trị viên..."
-                            value="<?php echo oldData('fullname', $old) ?>">
+                        <input type="text" name="fullname" class="form-control" placeholder="Tên quản trị viên..." value="<?php echo oldData('fullname', $old) ?>">
                         <p class="error"><?php echo errorData('fullname', $error) ?></p>
                     </div>
 
@@ -101,15 +99,13 @@ $error = getFlashData('errors');
                 <div class="col-6">
                     <div class="form-group">
                         <label>Email quản trị viên </label>
-                        <input type="text" name="email" placeholder="nhập vào email..." class="form-control"
-                            value="<?php echo oldData('email', $old) ?>">
+                        <input type="text" name="email" placeholder="nhập vào email..." class="form-control" value="<?php echo oldData('email', $old) ?>">
                         <p class="error"><?php echo errorData('email', $error) ?></p>
                     </div>
 
                     <div class="form-group">
                         <label>Mật khẩu </label>
-                        <input type="password" name="password" placeholder="nhập vào mật khẩu..." class="form-control"
-                            value="<?php echo oldData('password', $old) ?>">
+                        <input type="password" name="password" placeholder="nhập vào mật khẩu..." class="form-control" value="<?php echo oldData('password', $old) ?>">
                         <p class="error"><?php echo errorData('password', $error) ?></p>
                     </div>
 

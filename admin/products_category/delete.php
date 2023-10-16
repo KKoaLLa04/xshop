@@ -7,7 +7,7 @@ if (!empty($_GET['id'])) {
     $condition = 'id=' . $id;
 
     // Check
-    $categoryForeign = getRows("SELECT id FROM products WHERE type_id=$id");
+    $categoryForeign = deleteCate($id);
     if ($categoryForeign > 0) {
         setFlashData('msg', 'Hiện trong danh mục còn ' . $categoryForeign . ' Hàng hóa. Vui lòng xóa hết hàng hóa trước khi xóa danh mục');
         setFlashData('msg_type', 'danger');

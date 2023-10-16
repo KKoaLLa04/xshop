@@ -4,7 +4,7 @@ if (!empty($_GET['id'])) {
     $id = $_GET['id'];
 
     // Truy vấn cơ sở dữ liệu
-    $cartDetail = firstRaw("SELECT * FROM cart WHERE id=$id");
+    $cartDetail = cartDetail($id);
     if (!empty($cartDetail)) {
         // update count
         $quantity = $cartDetail['quantity'];

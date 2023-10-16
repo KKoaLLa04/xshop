@@ -24,7 +24,7 @@ if (isGet()) {
 // 1.Số lượng bản ghi / 1 trang
 $perPage = _PER_PAGE;
 // 2.Lấy toàn bộ bản ghi trong db
-$countClient = getRows("SELECT id FROM client $filter");
+$countClient = countClient();
 // 3.Tính số lượng trang lớn nhất
 $maxPage = ceil($countClient / $perPage);
 // 4.Điều kiện
@@ -47,7 +47,7 @@ if (!empty($_GET['page'])) {
 $offset = ($page - 1) * $perPage;
 
 // Truy van co so du lieu clients
-$listAllClients = getRaw("SELECT * FROM client $filter WHERE position=0 ORDER BY id LIMIT $offset, $perPage");
+$listAllClients = allClient($filter, $offset, $perPage);
 
 $msg = getFlashData('msg');
 $msg_type = getFlashData('msg_type');
@@ -62,8 +62,7 @@ $msg_type = getFlashData('msg_type');
         <form action="" method="get">
             <div class="row">
                 <div class="col-9">
-                    <input type="search" class="form-control" placeholder="Từ khóa tìm kiếm" name="keyword"
-                        value="<?php echo !empty($keyword) ? $keyword : false ?>">
+                    <input type="search" class="form-control" placeholder="Từ khóa tìm kiếm" name="keyword" value="<?php echo !empty($keyword) ? $keyword : false ?>">
                 </div>
 
                 <div class="col-3">
@@ -90,22 +89,19 @@ $msg_type = getFlashData('msg_type');
             <tbody>
                 <?php if (!empty($listAllClients)) :
                     foreach ($listAllClients as $item) : ?>
-                <tr>
-                    <td><?php echo $item['id'] ?></td>
-                    <td><?php echo $item['fullname'] ?></td>
-                    <td><?php echo $item['email'] ?></td>
-                    </td>
-                    <td><?php echo $item['create_at'] ?></td>
-                    <td><?php echo !empty($item['update_at']) ? $item['update_at'] : false ?></td>
-                    <td class="text-center">
-                        <?php echo ($item['status'] == 1 && !empty($item['status'])) ? '<button class="btn btn-success btn-sm"> Đã kích hoạt </button> ' : '<button class="btn btn-warning btn-sm"> Chưa kích hoạt </button>' ?></button>
-                    <td><a href="?module=clients&action=update&id=<?php echo $item['id'] ?>"><button
-                                class="btn btn-warning btn-sm">Sửa <i class="fa fa-edit"></i></button></a>
-                    <td><a href="?module=clients&action=delete&id=<?php echo $item['id'] ?>"
-                            onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><button
-                                class="btn btn-danger btn-sm">Xóa <i class="fa fa-trash"></i></button></a>
-                    </td>
-                </tr>
+                        <tr>
+                            <td><?php echo $item['id'] ?></td>
+                            <td><?php echo $item['fullname'] ?></td>
+                            <td><?php echo $item['email'] ?></td>
+                            </td>
+                            <td><?php echo $item['create_at'] ?></td>
+                            <td><?php echo !empty($item['update_at']) ? $item['update_at'] : false ?></td>
+                            <td class="text-center">
+                                <?php echo ($item['status'] == 1 && !empty($item['status'])) ? '<button class="btn btn-success btn-sm"> Đã kích hoạt </button> ' : '<button class="btn btn-warning btn-sm"> Chưa kích hoạt </button>' ?></button>
+                            <td><a href="?module=clients&action=update&id=<?php echo $item['id'] ?>"><button class="btn btn-warning btn-sm">Sửa <i class="fa fa-edit"></i></button></a>
+                            <td><a href="?module=clients&action=delete&id=<?php echo $item['id'] ?>" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><button class="btn btn-danger btn-sm">Xóa <i class="fa fa-trash"></i></button></a>
+                            </td>
+                        </tr>
                 <?php endforeach;
                 endif; ?>
             </tbody>
@@ -116,19 +112,18 @@ $msg_type = getFlashData('msg_type');
                 <?php if ($page > 1) :
                     $prev = $page - 1;
                 ?>
-                <li class="page-item"><a class="page-link" href="?module=clients&page=<?php echo $prev ?>">Trước</a>
-                </li>
+                    <li class="page-item"><a class="page-link" href="?module=clients&page=<?php echo $prev ?>">Trước</a>
+                    </li>
                 <?php endif; ?>
                 <?php
                 for ($i = 1; $i <= $maxPage; $i++) :
                 ?>
-                <li class="page-item"><a class="page-link"
-                        href="?module=clients&page=<?php echo $i ?>"><?php echo $i ?></a></li>
+                    <li class="page-item"><a class="page-link" href="?module=clients&page=<?php echo $i ?>"><?php echo $i ?></a></li>
                 <?php endfor; ?>
                 <?php if ($page < $maxPage) :
                     $next = $page + 1;
                 ?>
-                <li class="page-item"><a class="page-link" href="?module=clients&page=<?php echo $next ?>">Sau</a></li>
+                    <li class="page-item"><a class="page-link" href="?module=clients&page=<?php echo $next ?>">Sau</a></li>
                 <?php endif; ?>
             </ul>
         </nav>

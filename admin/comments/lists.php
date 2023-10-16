@@ -24,7 +24,7 @@ if (isGet()) {
 // 1.Số lượng bản ghi / 1 trang
 $perPage = _PER_PAGE;
 // 2.Lấy toàn bộ bản ghi trong db
-$countComment = getRows("SELECT id FROM comments");
+$countComment = countComment();
 // 3.Tính số lượng trang lớn nhất
 $maxPage = ceil($countComment / $perPage);
 // 4.Điều kiện
@@ -47,7 +47,7 @@ if (!empty($_GET['page'])) {
 $offset = ($page - 1) * $perPage;
 
 // Truy van co so du lieu comments
-$listAllComments = getRaw("SELECT comments.*,fullname,name FROM comments INNER JOIN client ON client.id=comments.client_id INNER JOIN products ON products.id=comments.product_id $filter ORDER BY id LIMIT $offset, $perPage");
+$listAllComments = allComments($filter, $offset, $perPage);
 
 $msg = getFlashData('msg');
 $msg_type = getFlashData('msg_type');

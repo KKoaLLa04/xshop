@@ -8,7 +8,7 @@ loadLayoutClient('header.php', $data);
 // Lay dữ liệu sản phẩm
 if (!empty($_GET['id'])) {
     $id = $_GET['id'];
-    $productDetail = firstRaw("SELECT products.*,type.name as type_name FROM products INNER JOIN type ON type.id=products.type_id WHERE products.id = $id");
+    $productDetail = productClientDetail($id);
 
     // update view
     $view = $productDetail['view'];
@@ -20,13 +20,13 @@ if (!empty($_GET['id'])) {
     update('products', $dataUpdate, $condition);
 
     // lấy dữ liệu comments
-    $listAllComments = getRaw("SELECT comments.*,fullname FROM comments INNER JOIN client ON client.id=client_id WHERE product_id=$id ORDER BY comments.id DESC");
+    $listAllComments = productCommentDetail($id);
 
     // Lấy dữ liệu sản phẩm cùng loại
     if (!empty($productDetail['type_id'])) {
         $typeId = $productDetail['type_id'];
         if (!empty($typeId)) {
-            $listAllProducts = getRaw("SELECT * FROM products WHERE type_id=$typeId AND id <> $id ORDER BY id DESC LIMIT 0,4");
+            $listAllProducts = clientProductLimit($typeId, $id);
         }
     }
 
@@ -94,8 +94,7 @@ $error = getFlashData('error');
             <div class="box_title">CHI TIẾT SẢN PHẨM</div>
             <div class="row">
                 <div class="col-6">
-                    <img src="<?php echo _WEB_HOST_ROOT . '/uploads/' . $productDetail['image'] ?>" width="100%"
-                        height="100%">
+                    <img src="<?php echo _WEB_HOST_ROOT . '/uploads/' . $productDetail['image'] ?>" width="100%" height="100%">
                 </div>
                 <div class="col-6">
                     <h4><?php echo $productDetail['name'] ?></h4>
@@ -103,10 +102,8 @@ $error = getFlashData('error');
                     <p><?php echo $productDetail['description'] ?></p>
                     <p>Lượt xem: <?php echo $productDetail['view'] ?></p>
                     <p>Loại: <b><?php echo $productDetail['type_name'] ?></b></p>
-                    <a href="?module=cart&action=buynow&id=<?php echo $productDetail['id'] ?>"><button
-                            class="btn btn-primary">Đặt Mua</button></a>
-                    <a href="?module=cart&action=add&id=<?php echo $productDetail['id'] ?>"><button
-                            class="btn btn-success">Thêm vào giỏ hàng <i class="fa fa-shopping-cart"></i></button></a>
+                    <a href="?module=cart&action=buynow&id=<?php echo $productDetail['id'] ?>"><button class="btn btn-primary">Đặt Mua</button></a>
+                    <a href="?module=cart&action=add&id=<?php echo $productDetail['id'] ?>"><button class="btn btn-success">Thêm vào giỏ hàng <i class="fa fa-shopping-cart"></i></button></a>
                 </div>
             </div>
         </div>
@@ -119,17 +116,17 @@ $error = getFlashData('error');
                         $dateObj = date_create($item['create_at']);
                         $dateFormat = date_format($dateObj, 'd/m/Y H:i:s')
                 ?>
-                <div class="comment-list" style="display: flex; justify-content: space-between;">
-                    <p><b><?php echo $item['fullname'] ?></b>: <?php echo $item['content'] ?> </p>
-                    <p class="error" style="text-align: left;"><?php echo errorData('content', $error) ?></p>
-                </div>
-                <?php endforeach;
+                        <div class="comment-list" style="display: flex; justify-content: space-between;">
+                            <p><b><?php echo $item['fullname'] ?></b>: <?php echo $item['content'] ?> </p>
+                            <p class="error" style="text-align: left;"><?php echo errorData('content', $error) ?></p>
+                        </div>
+                    <?php endforeach;
                 else :
                     ?>
-                <div class="comment-list alert alert-warning">
-                    <p class="text-center">Hiện chưa có bình luận nào tại sản phẩm này, hãy là người bình luận đầu tiên
-                    </p>
-                </div>
+                    <div class="comment-list alert alert-warning">
+                        <p class="text-center">Hiện chưa có bình luận nào tại sản phẩm này, hãy là người bình luận đầu tiên
+                        </p>
+                    </div>
                 <?php
                 endif ?>
             </div>
@@ -139,28 +136,26 @@ $error = getFlashData('error');
                 <form action="" method="POST">
                     <!-- <input type="hidden" name="idpro" value=""> -->
                     <?php if (isLogin()) : ?>
-                    <div class="row">
-                        <div class="col-10">
-                            <input type="text" name="content" class="form-control"
-                                placeholder="Viết bình luận của bạn...">
-                            <p class="error"><?php echo oldData('content', $error) ?></p>
+                        <div class="row">
+                            <div class="col-10">
+                                <input type="text" name="content" class="form-control" placeholder="Viết bình luận của bạn...">
+                                <p class="error"><?php echo oldData('content', $error) ?></p>
+                            </div>
+                            <div class="col-2">
+                                <!-- <input type="submit" name="guibinhluan" value="Gửi bình luận" class="form-control"> -->
+                                <button type="submit" name="sendComment" value="1" class="form-control">Gửi bình
+                                    luận</button>
+                            </div>
                         </div>
-                        <div class="col-2">
-                            <!-- <input type="submit" name="guibinhluan" value="Gửi bình luận" class="form-control"> -->
-                            <button type="submit" name="sendComment" value="1" class="form-control">Gửi bình
-                                luận</button>
-                        </div>
-                    </div>
                     <?php else : ?>
-                    <div class="row">
-                        <div class="col-10">
-                            <input type="text" name="content" class="form-control"
-                                placeholder="Viết bình luận của bạn (Đăng nhập để bình luận)..." disabled>
+                        <div class="row">
+                            <div class="col-10">
+                                <input type="text" name="content" class="form-control" placeholder="Viết bình luận của bạn (Đăng nhập để bình luận)..." disabled>
+                            </div>
+                            <div class="col-2">
+                                <input type="submit" name="guibinhluan" value="Gửi bình luận" class="form-control" disabled>
+                            </div>
                         </div>
-                        <div class="col-2">
-                            <input type="submit" name="guibinhluan" value="Gửi bình luận" class="form-control" disabled>
-                        </div>
-                    </div>
                     <?php endif; ?>
                 </form>
             </div>
@@ -173,14 +168,11 @@ $error = getFlashData('error');
                 <div class="row">
                     <?php if (!empty($listAllProducts)) :
                         foreach ($listAllProducts as $item) : ?>
-                    <div class="col-3">
-                        <a href="?module=products&action=detail&id=<?php echo $item['id'] ?>"><img
-                                src="<?php echo _WEB_HOST_ROOT . '/uploads/' . $item['image'] ?>" alt="" width="100%"
-                                height="100%"></a>
-                        <p class="text-center"><a href="?module=products&action=detail&id=<?php echo $item['id'] ?>"
-                                style="color: black; text-decoration: none;"><b><?php echo $item['name'] ?></b></a>
-                        </p>
-                    </div>
+                            <div class="col-3">
+                                <a href="?module=products&action=detail&id=<?php echo $item['id'] ?>"><img src="<?php echo _WEB_HOST_ROOT . '/uploads/' . $item['image'] ?>" alt="" width="100%" height="100%"></a>
+                                <p class="text-center"><a href="?module=products&action=detail&id=<?php echo $item['id'] ?>" style="color: black; text-decoration: none;"><b><?php echo $item['name'] ?></b></a>
+                                </p>
+                            </div>
                     <?php endforeach;
                     endif ?>
                 </div>

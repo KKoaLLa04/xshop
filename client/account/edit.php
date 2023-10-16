@@ -7,7 +7,7 @@ loadLayoutClient('header.php', $data);
 
 if (isLogin()) {
     $clientId = isLogin()['client_id'];
-    $clientDetail = firstRaw("SELECT * FROM client WHERE id=$clientId");
+    $clientDetail = clientDetailAccount($clientId);
 
     if (!empty($clientDetail)) {
 
@@ -91,29 +91,25 @@ if (!empty($clientDetail) && empty($old)) {
         <form action="" method="post" style="text-align: left;">
             <div class="form-group">
                 <label for="">Họ và tên</label>
-                <input type="text" class="form-control" name="fullname" placeholder="Họ và tên..."
-                    value="<?php echo oldData('fullname', $old) ?>">
+                <input type="text" class="form-control" name="fullname" placeholder="Họ và tên..." value="<?php echo oldData('fullname', $old) ?>">
                 <p class="error"><?php echo errorData('fullname', $error) ?></p>
             </div>
 
             <div class="form-group">
                 <label for="">Email</label>
-                <input type="text" class="form-control" name="email" placeholder="Email..."
-                    value="<?php echo oldData('email', $old) ?>">
+                <input type="text" class="form-control" name="email" placeholder="Email..." value="<?php echo oldData('email', $old) ?>">
                 <p class="error"><?php echo errorData('email', $error) ?></p>
             </div>
 
             <div class="form-group">
                 <label for="">Số điện thoại</label>
-                <input type="text" class="form-control" name="phone" placeholder="số điện thoại..."
-                    value="<?php echo oldData('phone', $old) ?>">
+                <input type="text" class="form-control" name="phone" placeholder="số điện thoại..." value="<?php echo oldData('phone', $old) ?>">
                 <p class="error"><?php echo errorData('phone', $error) ?></p>
             </div>
 
             <div class="form-group">
                 <label for="">Địa chỉ</label>
-                <input type="text" class="form-control" name="address" placeholder="Địa chỉ..."
-                    value="<?php echo oldData('address', $old) ?>">
+                <input type="text" class="form-control" name="address" placeholder="Địa chỉ..." value="<?php echo oldData('address', $old) ?>">
                 <p class="error"><?php echo errorData('address', $error) ?></p>
             </div>
 

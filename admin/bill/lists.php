@@ -24,7 +24,7 @@ if (isGet()) {
 // 1.Số lượng bản ghi / 1 trang
 $perPage = _PER_PAGE;
 // 2.Lấy toàn bộ bản ghi trong db
-$countBill = getRows("SELECT id FROM bill $filter");
+$countBill = countBill($filter);
 // 3.Tính số lượng trang lớn nhất
 $maxPage = ceil($countBill / $perPage);
 // 4.Điều kiện
@@ -47,7 +47,7 @@ if (!empty($_GET['page'])) {
 $offset = ($page - 1) * $perPage;
 
 // Truy van co so du lieu bill
-$listAllBill = getRaw("SELECT * FROM bill $filter ORDER BY client_id DESC LIMIT $offset, $perPage");
+$listAllBill = allBill($filter, $offset, $perPage);
 
 $msg = getFlashData('msg');
 $msg_type = getFlashData('msg_type');
@@ -62,8 +62,7 @@ $msg_type = getFlashData('msg_type');
         <form action="" method="get">
             <div class="row">
                 <div class="col-9">
-                    <input type="search" class="form-control" placeholder="Từ khóa tìm kiếm" name="keyword"
-                        value="<?php echo !empty($keyword) ? $keyword : false ?>">
+                    <input type="search" class="form-control" placeholder="Từ khóa tìm kiếm" name="keyword" value="<?php echo !empty($keyword) ? $keyword : false ?>">
                 </div>
 
                 <div class="col-3">
@@ -96,16 +95,16 @@ $msg_type = getFlashData('msg_type');
                         $dateObj = date_create($item['create_at']);
                         $dateFormat = date_format($dateObj, 'd/m/Y');
                 ?>
-                <tr>
-                    <td><?php echo $item['code'] ?></td>
-                    <td><?php echo $item['name'] ?></td>
-                    <td><?php echo $item['email'] ?></td>
-                    <td><?php echo $item['address'] ?></td>
-                    <td><?php echo $item['phone'] ?></td>
-                    <td><?php echo (isset($item['pay']) && $item['pay'] == 0) ? 'Thanh toán khi nhận' : 'Thanh toán online' ?>
-                    </td>
-                    <td><?php echo $item['total'] ?></td>
-                    <td><?php if ((!$item['status'] && $item['status'] == 0)) {
+                        <tr>
+                            <td><?php echo $item['code'] ?></td>
+                            <td><?php echo $item['name'] ?></td>
+                            <td><?php echo $item['email'] ?></td>
+                            <td><?php echo $item['address'] ?></td>
+                            <td><?php echo $item['phone'] ?></td>
+                            <td><?php echo (isset($item['pay']) && $item['pay'] == 0) ? 'Thanh toán khi nhận' : 'Thanh toán online' ?>
+                            </td>
+                            <td><?php echo $item['total'] ?></td>
+                            <td><?php if ((!$item['status'] && $item['status'] == 0)) {
                                     echo '<a href="?module=bill&action=status&status=0&code=' . $item['code'] . '"><button class="btn btn-danger btn-sm">Đơn hàng mới</button></a>';
                                 } elseif ($item['status'] == 1) {
                                     echo '<a href="?module=bill&action=status&status=1&code=' . $item['code'] . '"><button class="btn btn-warning btn-sm">Đang xử lý</button></a>';
@@ -114,14 +113,12 @@ $msg_type = getFlashData('msg_type');
                                 } elseif ($item['status'] == 3) {
                                     echo  '<a href="?module=bill&action=status&status=3&code=' . $item['code'] . '"><button class="btn btn-success btn-sm">Đã giao</button></a>';
                                 }   ?>
-                    </td>
-                    <td><?php echo $dateFormat ?></td>
-                    <td><a href="?module=bill&action=update&id=<?php echo $item['id'] ?>"><button
-                                class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></button></a>
-                    <td><a href="#"><button class="btn btn-danger btn-sm" disabled> <i
-                                    class="fa fa-trash"></i></button></a>
-                    </td>
-                </tr>
+                            </td>
+                            <td><?php echo $dateFormat ?></td>
+                            <td><a href="?module=bill&action=update&id=<?php echo $item['id'] ?>"><button class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></button></a>
+                            <td><a href="#"><button class="btn btn-danger btn-sm" disabled> <i class="fa fa-trash"></i></button></a>
+                            </td>
+                        </tr>
                 <?php endforeach;
                 endif; ?>
             </tbody>
@@ -132,19 +129,18 @@ $msg_type = getFlashData('msg_type');
                 <?php if ($page > 1) :
                     $prev = $page - 1;
                 ?>
-                <li class="page-item"><a class="page-link" href="?module=bill&page=<?php echo $prev ?>">Trước</a>
-                </li>
+                    <li class="page-item"><a class="page-link" href="?module=bill&page=<?php echo $prev ?>">Trước</a>
+                    </li>
                 <?php endif; ?>
                 <?php
                 for ($i = 1; $i <= $maxPage; $i++) :
                 ?>
-                <li class="page-item"><a class="page-link"
-                        href="?module=bill&page=<?php echo $i ?>"><?php echo $i ?></a></li>
+                    <li class="page-item"><a class="page-link" href="?module=bill&page=<?php echo $i ?>"><?php echo $i ?></a></li>
                 <?php endfor; ?>
                 <?php if ($page < $maxPage) :
                     $next = $page + 1;
                 ?>
-                <li class="page-item"><a class="page-link" href="?module=bill&page=<?php echo $next ?>">Sau</a></li>
+                    <li class="page-item"><a class="page-link" href="?module=bill&page=<?php echo $next ?>">Sau</a></li>
                 <?php endif; ?>
             </ul>
         </nav>

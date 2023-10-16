@@ -7,7 +7,7 @@ if (!empty(trim($body['token']))) {
     $token = trim($body['token']);
 
     if (!empty($_POST['resetButton'])) {
-        $clientQuery = firstRaw("SELECT * FROM client WHERE forgot='$token'");
+        $clientQuery = forgotToken($token);
 
         if (!empty($clientQuery)) {
             if (isPost()) {
@@ -49,6 +49,7 @@ if (!empty(trim($body['token']))) {
                         // Tiến hành gửi email
                         setFlashData('msg', 'Bạn đã đổi mật khẩu thành công');
                         setFlashData('msg_type', 'success');
+                        redirect('index.php');
                     } else {
                         setFlashData('msg', 'Có lỗi xảy ra, vui lòng thử lại sau!');
                         setFlashData('msg_type', 'danger');
@@ -60,12 +61,12 @@ if (!empty(trim($body['token']))) {
                     setFlashData('old', $body);
                 }
 
-                redirect('index.php');
+                // redirect('index.php');
             }
         } else {
             setFlashData('msg', 'Liên kết không tồn tại hoặc đã hết hạn');
             setFlashData('msg_type', 'danger');
-            redirect('index.php');
+            // redirect('index.php');
         }
     }
 } else {

@@ -5,7 +5,7 @@ require_once _WEB_PATH_TEMPLATE . '/admin/layouts/header.php';
 // Truy vấn cơ sở dữ liệu cũ
 if (!empty($_GET['id'])) {
     $id = $_GET['id'];
-    $clientDetail = firstRaw("SELECT * FROM client WHERE id=$id");
+    $clientDetail = clientDetail($id);
 }
 
 if (isPost()) {
@@ -31,7 +31,7 @@ if (isPost()) {
         } else {
             // Truy van co so du lieu bang client
             $email = trim($body['email']);
-            $listClient = getRows("SELECT * FROM client WHERE email='$email' AND id<>$id");
+            $listClient = checkEmailClient($email, $id);
             if ($listClient > 0) {
                 $errors['email'] = 'Email đã tồn tại, vui lòng thử lại email khác';
             }
@@ -90,30 +90,26 @@ if (empty($old) && !empty($clientDetail)) {
                 <div class="col-6">
                     <div class="form-group">
                         <label> Tên khách hàng </label>
-                        <input type="text" name="fullname" placeholder="Tên khách hàng..." class="form-control"
-                            value="<?php echo oldData('fullname', $old) ?>">
+                        <input type="text" name="fullname" placeholder="Tên khách hàng..." class="form-control" value="<?php echo oldData('fullname', $old) ?>">
                         <p class="error"><?php echo errorData('fullname', $error) ?></p>
                     </div>
 
                     <div class="form-group">
                         <label> Email </label>
-                        <input type="text" name="email" placeholder="Email..." class="form-control"
-                            value="<?php echo oldData('email', $old) ?>">
+                        <input type="text" name="email" placeholder="Email..." class="form-control" value="<?php echo oldData('email', $old) ?>">
                         <p class="error"><?php echo errorData('email', $error) ?></p>
                     </div>
 
                     <div class="form-group">
                         <label> Phone </label>
-                        <input type="text" name="phone" placeholder="Số điện thoại..." class="form-control"
-                            value="<?php echo oldData('phone', $old) ?>">
+                        <input type="text" name="phone" placeholder="Số điện thoại..." class="form-control" value="<?php echo oldData('phone', $old) ?>">
                     </div>
                 </div>
 
                 <div class="col-6">
                     <div class="form-group">
                         <label> Địa chỉ </label>
-                        <input type="text" name="address" placeholder="Địa chỉ..." class="form-control"
-                            value="<?php echo oldData('address', $old) ?>">
+                        <input type="text" name="address" placeholder="Địa chỉ..." class="form-control" value="<?php echo oldData('address', $old) ?>">
                     </div>
 
                     <div class="form-group">

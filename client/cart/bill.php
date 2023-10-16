@@ -11,7 +11,7 @@ if (isLogin()) {
 
     // Truy vấn cơ sở dữ liệu bảng bill
 
-    $listBillDetail = firstRaw("SELECT * FROM bill WHERE client_id=$clientId ORDER BY id DESC");
+    $listBillDetail = listBillDetail($clientId);
     $billId = $listBillDetail['id'];
     if (!empty($listBillDetail)) {
         $codeId = $listBillDetail['code'];
@@ -109,8 +109,10 @@ $error = getFlashData('error');
                         <?php endif;  ?>
                     </tbody>
                 </table>
-                <p>Tổng tiền: <b><?php echo !empty($total) ? $total : '0' ?> VNĐ</b></p>
-                <input type="hidden" name="total" value="<?php echo !empty($total) ? $total : '0' ?>">
+                <p>Tổng tiền: <b><?php echo !empty($listBillDetail['total'] ) ? $listBillDetail['total']  : '0' ?>
+                        VNĐ</b></p>
+                <input type="hidden" name="total"
+                    value="<?php echo !empty($listBillDetail['total'] ) ? $listBillDetail['total']  : '0' ?>">
                 <button class="btn btn-success btn-sm" name="agree" value="1"><a href="index.php"
                         style="text-decoration: none; color: white;">Quay lại trang
                         chủ</a></button>

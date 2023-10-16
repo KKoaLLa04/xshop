@@ -80,7 +80,7 @@ if (empty($old) && !empty($clientDetail)) {
 ?>
 <div class="row2">
     <div class="row2 font_title">
-        <h1>Cập nhật thông tin account khách hàng</h1>
+        <h1>Cập nhật thông tin account quản trị viên</h1>
     </div>
     <div class="row2 form_content ">
         <br>
@@ -91,30 +91,26 @@ if (empty($old) && !empty($clientDetail)) {
                 <div class="col-6">
                     <div class="form-group">
                         <label> Tên quản trị viên </label>
-                        <input type="text" name="fullname" placeholder="Tên quản trị viên..." class="form-control"
-                            value="<?php echo oldData('fullname', $old) ?>">
+                        <input type="text" name="fullname" placeholder="Tên quản trị viên..." class="form-control" value="<?php echo oldData('fullname', $old) ?>">
                         <p class="error"><?php echo errorData('fullname', $error) ?></p>
                     </div>
 
                     <div class="form-group">
                         <label> Email </label>
-                        <input type="text" name="email" placeholder="Email..." class="form-control"
-                            value="<?php echo oldData('email', $old) ?>">
+                        <input type="text" name="email" placeholder="Email..." class="form-control" value="<?php echo oldData('email', $old) ?>">
                         <p class="error"><?php echo errorData('email', $error) ?></p>
                     </div>
 
                     <div class="form-group">
                         <label> Phone </label>
-                        <input type="text" name="phone" placeholder="Số điện thoại..." class="form-control"
-                            value="<?php echo oldData('phone', $old) ?>">
+                        <input type="text" name="phone" placeholder="Số điện thoại..." class="form-control" value="<?php echo oldData('phone', $old) ?>">
                     </div>
                 </div>
 
                 <div class="col-6">
                     <div class="form-group">
                         <label> Địa chỉ </label>
-                        <input type="text" name="address" placeholder="Địa chỉ..." class="form-control"
-                            value="<?php echo oldData('address', $old) ?>">
+                        <input type="text" name="address" placeholder="Địa chỉ..." class="form-control" value="<?php echo oldData('address', $old) ?>">
                         <p></p>
                     </div>
 

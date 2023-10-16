@@ -2,7 +2,7 @@
 require_once _WEB_PATH_TEMPLATE . '/admin/layouts/header.php';
 
 // Lấy dữ liệu
-$listAllCate = getRaw("SELECT type.*,count(products.id) as count_id, max(products.price) as max_price ,min(products.price) as min_price,avg(products.price)  as avg_price FROM type INNER JOIN products ON products.type_id=type.id WHERE products.type_id=type.id GROUP BY type.id ORDER BY id DESC");
+$listAllCate = allChart();
 
 $msg = getFlashData('msg');
 $msg_type = getFlashData('msg_type');

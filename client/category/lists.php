@@ -8,10 +8,10 @@ loadLayoutClient('header.php', $data);
 // truy van lay tất cả dữ liệu trong bảng type
 if (!empty($_GET['id'])) {
     $id = $_GET['id'];
-    $firstCategory = firstRaw("SELECT * FROM type WHERE id = $id ORDER BY id DESC");
+    $firstCategory = firstCate($id);
     if (!empty($firstCategory)) {
         // Truy van lay tat ca san pham cua danh muc 
-        $listAllProductCate = getRaw("SELECT * FROM products WHERE type_id=$id");
+        $listAllProductCate = allCate($id);
     } else {
         redirect('index.php');
     }
@@ -33,21 +33,22 @@ if (!empty($_GET['id'])) {
             <?php if (!empty($listAllProductCate)) :
                 foreach ($listAllProductCate as $item) :
             ?>
-            <div class="box_items">
-                <div class="box_items_img">
-                    <img src="<?php echo 'uploads/' . $item['image'] ?> ">
-                    <div class="add" href="">ADD TO CART</div>
-                </div>
-                <a class="item_name"
-                    href="?module=products&action=detail&id=<?php echo $item['id'] ?>"><?php echo $item['name'] ?></a>
-                <p class="price">$<?php echo $item['price'] ?></p>
-            </div>
-            <?php endforeach;
+                    <div class="box_items">
+                        <div class="box_items_img">
+                            <img src="<?php echo 'uploads/' . $item['image'] ?> ">
+                            <div class="add"><a href="?module=cart&action=add&product_id=<?php echo $item['id'] ?>">ADD TO
+                                    CART</a>
+                            </div>
+                        </div>
+                        <a class="item_name" href="?module=products&action=detail&id=<?php echo $item['id'] ?>"><?php echo $item['name'] ?></a>
+                        <p class="price">$<?php echo $item['price'] ?></p>
+                    </div>
+                <?php endforeach;
             else :
                 ?>
-            <div class="alert alert-danger" style="grid-column: 1 / 3 span;">
-                <p class="text-center">Hiện không có sản phẩm nào của danh mục <?php echo $firstCategory['name'] ?></p>
-            </div>
+                <div class="alert alert-danger" style="grid-column: 1 / 3 span;">
+                    <p class="text-center">Hiện không có sản phẩm nào của danh mục <?php echo $firstCategory['name'] ?></p>
+                </div>
             <?php
             endif ?>
         </div>

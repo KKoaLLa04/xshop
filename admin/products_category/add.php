@@ -64,7 +64,6 @@ $error = getFlashData('error');
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Thêm mới</button>
-                <button type="button" class="btn btn-warning">Nhập lại</button>
                 <a href="?module=products_category"><button type="button" class="btn btn-success">Danh sách</button></a>
             </div>
         </form>

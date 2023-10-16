@@ -5,7 +5,7 @@ require_once _WEB_PATH_TEMPLATE . '/admin/layouts/header.php';
 // Truy vấn cơ sở dữ liệu cũ
 if (!empty($_GET['id'])) {
     $id = $_GET['id'];
-    $listComment = firstRaw("SELECT comments.*,name,fullname FROM comments INNER JOIN products ON products.id=comments.product_id INNER JOIN client ON client.id=comments.client_id WHERE comments.id=$id");
+    $listComment = commentDetail($id);
 }
 
 if (isPost()) {
@@ -48,7 +48,7 @@ if (isPost()) {
     }
 }
 // danh sach toan bo san pham
-$listAllProducts = getRaw("SELECT * FROM products ORDER BY id DESC");
+$listAllProducts = listProduct();
 
 $msg = getFlashData('msg');
 $msg_type = getFlashData('msg_type');
@@ -71,8 +71,7 @@ if (empty($old) && !empty($listComment)) {
                 <div class="col-6">
                     <div class="form-group">
                         <label> Tên khách hàng </label> <br>
-                        <input type="text" name="fullname" placeholder="Tên khách hàng..." class="form-control"
-                            value="<?php echo oldData('fullname', $old) ?>" disabled>
+                        <input type="text" name="fullname" placeholder="Tên khách hàng..." class="form-control" value="<?php echo oldData('fullname', $old) ?>" disabled>
                     </div>
 
                 </div>
@@ -83,9 +82,8 @@ if (empty($old) && !empty($listComment)) {
                         <select name="product_id" class="form-control">
                             <?php if (!empty($listAllProducts)) :
                                 foreach ($listAllProducts as $item) :  ?>
-                            <option value="<?php echo $item['id'] ?>"
-                                <?php echo ($item['id'] == $listComment['product_id']) ? 'selected' : false ?>>
-                                <?php echo $item['name'] ?></option>
+                                    <option value="<?php echo $item['id'] ?>" <?php echo ($item['id'] == $listComment['product_id']) ? 'selected' : false ?>>
+                                        <?php echo $item['name'] ?></option>
                             <?php endforeach;
                             endif ?>
                         </select>
@@ -95,8 +93,7 @@ if (empty($old) && !empty($listComment)) {
 
                 <div class="col-12">
                     <label for="">Nội dung bình luận</label>
-                    <textarea name="content" class="form-control"
-                        rows="10"><?php echo $listComment['content'] ?></textarea>
+                    <textarea name="content" class="form-control" rows="10"><?php echo $listComment['content'] ?></textarea>
                     <p class="error"><?php echo errorData('content', $error) ?></p>
                 </div>
 

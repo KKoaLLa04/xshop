@@ -105,13 +105,15 @@ if (empty($old) && !empty($listProducts)) {
                 <div class="col-6">
                     <div class="form-group">
                         <label> Mã loại </label> <br>
-                        <input type="text" name="id" placeholder="nhập vào mã loại" class="form-control" value="<?php echo oldData('id', $old) ?>" disabled>
+                        <input type="text" name="id" placeholder="nhập vào mã loại" class="form-control"
+                            value="<?php echo oldData('id', $old) ?>" disabled>
                         <p></p>
                     </div>
 
                     <div class="form-group">
                         <label for="">Giá</label>
-                        <input type="text" name="price" class="form-control" placeholder="Giá hàng hóa..." value="<?php echo oldData('price', $old) ?>">
+                        <input type="text" name="price" class="form-control" placeholder="Giá hàng hóa..."
+                            value="<?php echo oldData('price', $old) ?>">
                         <p class="error"><?php echo errorData('price', $error) ?></p>
                     </div>
 
@@ -121,8 +123,9 @@ if (empty($old) && !empty($listProducts)) {
                             <option value="0">Chọn danh mục</option>
                             <?php if (!empty($listAllType)) :
                                 foreach ($listAllType as $item) : ?>
-                                    <option value="<?php echo $item['id'] ?>" <?php echo (!empty($old['type_id']) && $item['id'] == $old['type_id']) ? 'selected' : false ?>>
-                                        <?php echo $item['name'] ?></option>
+                            <option value="<?php echo $item['id'] ?>"
+                                <?php echo (!empty($old['type_id']) && $item['id'] == $old['type_id']) ? 'selected' : false ?>>
+                                <?php echo $item['name'] ?></option>
                             <?php endforeach;
                             endif; ?>
                         </select>
@@ -134,17 +137,20 @@ if (empty($old) && !empty($listProducts)) {
                 <div class="col-6">
                     <div class="form-group">
                         <label>Tên Hàng hóa </label> <br>
-                        <input type="text" name="name" placeholder="nhập vào tên hàng hóa" class="form-control" value="<?php echo oldData('name', $old) ?>">
+                        <input type="text" name="name" placeholder="nhập vào tên hàng hóa" class="form-control"
+                            value="<?php echo oldData('name', $old) ?>">
                         <p class="error"><?php echo errorData('name', $error) ?></p>
                     </div>
 
                     <div class="form-group">
                         <label for="">Tình trạng</label>
                         <select name="status" class="form-control">
-                            <option value="0" <?php echo !empty($old['status'] && $old['status'] == 0) ? 'selected' : false ?>>Hết
+                            <option value="0"
+                                <?php echo !empty($old['status'] && $old['status'] == 0) ? 'selected' : false ?>>Hết
                                 hàng
                             </option>
-                            <option value="1" <?php echo !empty($old['status'] && $old['status'] == 1) ? 'selected' : false ?>>Còn
+                            <option value="1"
+                                <?php echo !empty($old['status'] && $old['status'] == 1) ? 'selected' : false ?>>Còn
                                 hàng
                             </option>
                         </select>
@@ -160,7 +166,8 @@ if (empty($old) && !empty($listProducts)) {
                             </div>
                             <div class="col-6">
                                 <label for="">Ảnh Gốc</label>
-                                <img src="<?php echo _WEB_HOST_ROOT . '/uploads/' . oldData('image', $old) ?>" alt="" width="150px">
+                                <img src="<?php echo _WEB_HOST_ROOT . '/uploads/' . oldData('image', $old) ?>" alt=""
+                                    width="150px">
                             </div>
                         </div>
                     </div>
@@ -170,7 +177,6 @@ if (empty($old) && !empty($listProducts)) {
 
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Cập nhật</button>
-                <button type="button" class="btn btn-warning">Nhập lại</button>
                 <a href="?module=products"><button type="button" class="btn btn-success">Danh sách</button></a>
             </div>
         </form>

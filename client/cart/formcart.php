@@ -9,11 +9,11 @@ loadLayoutClient('header.php', $data);
 if (isLogin()) {
     $clientId = isLogin()['client_id'];
     if (!empty($clientId)) {
-        $listAllCart = getRaw("SELECT * FROM cart WHERE client_id=$clientId AND status=0 ORDER BY id DESC");
+        $listAllCart = allCart($clientId);
     }
 
     // truy van co so du lieu nguoi dung
-    $clientInfo = firstRaw("SELECT * FROM client WHERE id=$clientId");
+    $clientInfo = clientDetailAccount($clientId);
     if (isPost()) {
         $body = getBody();
 
@@ -87,17 +87,13 @@ $error = getFlashData('error');
                 <div class="box_title"><b>Thông tin đặt hàng</b></div>
                 <div style="padding: 5px 2px;">
                     <hr>
-                    <input type="text" class="form-control" placeholder="Người đặt hàng..." name="name"
-                        value="<?php echo !empty($clientInfo['fullname']) ? $clientInfo['fullname'] : '' ?>">
+                    <input type="text" class="form-control" placeholder="Người đặt hàng..." name="name" value="<?php echo !empty($clientInfo['fullname']) ? $clientInfo['fullname'] : '' ?>">
                     <p class="error"><?php echo errorData('name', $error) ?></p>
-                    <input type="text" class="form-control" placeholder="Email..." name="email"
-                        value="<?php echo !empty($clientInfo['email']) ? $clientInfo['email'] : '' ?>">
+                    <input type="text" class="form-control" placeholder="Email..." name="email" value="<?php echo !empty($clientInfo['email']) ? $clientInfo['email'] : '' ?>">
                     <p class="error"><?php echo errorData('email', $error) ?></p>
-                    <input type="text" class="form-control" placeholder="Địa chỉ...." name="address"
-                        value="<?php echo !empty($clientInfo['address']) ? $clientInfo['address'] : '' ?>">
+                    <input type="text" class="form-control" placeholder="Địa chỉ...." name="address" value="<?php echo !empty($clientInfo['address']) ? $clientInfo['address'] : '' ?>">
                     <p class="error"><?php echo errorData('address', $error) ?></p>
-                    <input type="text" class="form-control" placeholder="Số điện thoại..." name="phone"
-                        value="<?php echo !empty($clientInfo['phone']) ? $clientInfo['phone'] : '' ?>">
+                    <input type="text" class="form-control" placeholder="Số điện thoại..." name="phone" value="<?php echo !empty($clientInfo['phone']) ? $clientInfo['phone'] : '' ?>">
                     <p class="error"><?php echo errorData('phone', $error) ?></p>
                 </div>
             </div>
@@ -133,17 +129,17 @@ $error = getFlashData('error');
                                 $total += $item['price'] * $item['quantity'];
                                 $totalPrice = $item['price'] * $item['quantity'];
                         ?>
-                        <tr>
-                            <td><?php echo $count; ?></td>
-                            <td><img src="<?php echo _WEB_HOST_ROOT . '/uploads/' . $item['images']; ?>" width="100%">
-                            </td>
-                            <td><?php echo $item['name'] ?></td>
-                            <td><?php echo $item['price'] ?></td>
-                            <td class="text-center">
-                                <?php echo '<button class="px-3 btn btn-success btn-sm" type="button" >' . $item['quantity'] . '</button>' ?>
-                            </td>
-                            <td><?php echo $totalPrice ?></td>
-                        </tr>
+                                <tr>
+                                    <td><?php echo $count; ?></td>
+                                    <td><img src="<?php echo _WEB_HOST_ROOT . '/uploads/' . $item['images']; ?>" width="100%">
+                                    </td>
+                                    <td><?php echo $item['name'] ?></td>
+                                    <td><?php echo $item['price'] ?></td>
+                                    <td class="text-center">
+                                        <?php echo '<button class="px-3 btn btn-success btn-sm" type="button" >' . $item['quantity'] . '</button>' ?>
+                                    </td>
+                                    <td><?php echo $totalPrice ?></td>
+                                </tr>
                         <?php endforeach;
                         endif;  ?>
                     </tbody>

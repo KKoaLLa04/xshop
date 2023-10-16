@@ -11,10 +11,7 @@ if (isLogin()) {
     }
     if (!empty($clientId)) {
         // $listAllCart = getRaw("SELECT * FROM cart WHERE client_id=$clientId AND status=0 ORDER BY id DESC");
-        $productDetail = firstRaw("SELECT * FROM products WHERE id=$id");
-        echo '<pre>';
-        print_r($productDetail);
-        echo '</pre>';
+        $productDetail = cartFirstDetail($id);
     }
 
     // truy van co so du lieu nguoi dung
@@ -73,17 +70,13 @@ $error = getFlashData('error');
                 <div class="box_title"><b>Thông tin đặt hàng</b></div>
                 <div style="padding: 5px 2px;">
                     <hr>
-                    <input type="text" class="form-control" placeholder="Người đặt hàng..." name="name"
-                        value="<?php echo !empty($clientInfo['fullname']) ? $clientInfo['fullname'] : '' ?>">
+                    <input type="text" class="form-control" placeholder="Người đặt hàng..." name="name" value="<?php echo !empty($clientInfo['fullname']) ? $clientInfo['fullname'] : '' ?>">
                     <p class="error"><?php echo errorData('name', $error) ?></p>
-                    <input type="text" class="form-control" placeholder="Email..." name="email"
-                        value="<?php echo !empty($clientInfo['email']) ? $clientInfo['email'] : '' ?>">
+                    <input type="text" class="form-control" placeholder="Email..." name="email" value="<?php echo !empty($clientInfo['email']) ? $clientInfo['email'] : '' ?>">
                     <p class="error"><?php echo errorData('email', $error) ?></p>
-                    <input type="text" class="form-control" placeholder="Địa chỉ...." name="address"
-                        value="<?php echo !empty($clientInfo['address']) ? $clientInfo['address'] : '' ?>">
+                    <input type="text" class="form-control" placeholder="Địa chỉ...." name="address" value="<?php echo !empty($clientInfo['address']) ? $clientInfo['address'] : '' ?>">
                     <p class="error"><?php echo errorData('address', $error) ?></p>
-                    <input type="text" class="form-control" placeholder="Số điện thoại..." name="phone"
-                        value="<?php echo !empty($clientInfo['phone']) ? $clientInfo['phone'] : '' ?>">
+                    <input type="text" class="form-control" placeholder="Số điện thoại..." name="phone" value="<?php echo !empty($clientInfo['phone']) ? $clientInfo['phone'] : '' ?>">
                     <p class="error"><?php echo errorData('phone', $error) ?></p>
                 </div>
             </div>
@@ -114,26 +107,25 @@ $error = getFlashData('error');
                         <?php if (!empty($productDetail)) :
                             $count = 1;
                         ?>
-                        <tr>
-                            <td><?php echo $count; ?></td>
-                            <td><img src="<?php echo _WEB_HOST_ROOT . '/uploads/' . $productDetail['image']; ?>"
-                                    width="100%">
-                            </td>
-                            <td><?php echo $productDetail['name'] ?></td>
-                            <td><?php echo $productDetail['price'] ?></td>
-                            <td class="text-center">
-                                <!-- <a href="?module=cart&action=minus&id=<?php echo $productDetail['id'] ?>">
+                            <tr>
+                                <td><?php echo $count; ?></td>
+                                <td><img src="<?php echo _WEB_HOST_ROOT . '/uploads/' . $productDetail['image']; ?>" width="100%">
+                                </td>
+                                <td><?php echo $productDetail['name'] ?></td>
+                                <td><?php echo $productDetail['price'] ?></td>
+                                <td class="text-center">
+                                    <!-- <a href="?module=cart&action=minus&id=<?php echo $productDetail['id'] ?>">
                                     <button class="btn btn-primary btn-sm"><i class="fa fa-minus"></i></button>
                                 </a> -->
-                                <?php echo '<button class="px-3 btn btn-success btn-sm">1</button>' ?>
+                                    <?php echo '<button class="px-3 btn btn-success btn-sm">1</button>' ?>
 
-                                <!-- <a href="?module=cart&action=plus&id=<?php echo $productDetail['id'] ?>">
+                                    <!-- <a href="?module=cart&action=plus&id=<?php echo $productDetail['id'] ?>">
                                     <button class="btn btn-primary btn-sm plus-<?php echo $count; ?>"><i
                                             class="fa fa-plus"></i></button>
                                 </a> -->
-                            </td>
-                            <td><?php echo $productDetail['price'] ?></td>
-                        </tr>
+                                </td>
+                                <td><?php echo $productDetail['price'] ?></td>
+                            </tr>
                         <?php
                         endif;  ?>
                     </tbody>
@@ -141,9 +133,7 @@ $error = getFlashData('error');
                 <p>Tổng tiền: <b><?php echo !empty($productDetail['price']) ? $productDetail['price'] : '0' ?> VNĐ</b>
                 </p>
                 <!-- <input type="hidden" name="total" value="<?php echo !empty($total) ? $total : '0' ?>"> -->
-                <button class="btn btn-primary btn-sm" name="agree" value="1"><a
-                        href="?module=cart&action=billnow&id=<?php echo $productDetail['id'] ?>"
-                        style="color: white; text-decoration: none;">Đồng ý đặt
+                <button class="btn btn-primary btn-sm" name="agree" value="1"><a href="?module=cart&action=billnow&id=<?php echo $productDetail['id'] ?>" style="color: white; text-decoration: none;">Đồng ý đặt
                         hàng</a></button>
             </div>
         </form>

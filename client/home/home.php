@@ -7,7 +7,7 @@ $data = [
 loadLayoutClient('header.php', $data);
 
 // truy van lay tất cả dữ liệu trong bảng products
-$listAllProducts = getRaw("SELECT * FROM products ORDER BY id DESC LIMIT 0,9");
+$listAllProducts = productLimit();
 ?>
 <main class="catalog  mb">
 
@@ -20,17 +20,16 @@ $listAllProducts = getRaw("SELECT * FROM products ORDER BY id DESC LIMIT 0,9");
         <div class="items my-5">
             <?php if (!empty($listAllProducts)) :
                 foreach ($listAllProducts as $item) : ?>
-            <div class="box_items">
-                <div class="box_items_img">
-                    <img src="<?php echo 'uploads/' . $item['image'] ?> ">
-                    <div class="add"><a href="?module=cart&action=add&product_id=<?php echo $item['id'] ?>">ADD
-                            TO CART</a>
+                    <div class="box_items">
+                        <div class="box_items_img">
+                            <img src="<?php echo 'uploads/' . $item['image'] ?> ">
+                            <div class="add"><a href="?module=cart&action=add&product_id=<?php echo $item['id'] ?>">ADD
+                                    TO CART</a>
+                            </div>
+                        </div>
+                        <a class="item_name" href="?module=products&action=detail&id=<?php echo $item['id'] ?>"><?php echo $item['name'] ?></a>
+                        <p class="price">$<?php echo $item['price'] ?></p>
                     </div>
-                </div>
-                <a class="item_name"
-                    href="?module=products&action=detail&id=<?php echo $item['id'] ?>"><?php echo $item['name'] ?></a>
-                <p class="price">$<?php echo $item['price'] ?></p>
-            </div>
             <?php endforeach;
             endif; ?>
         </div>

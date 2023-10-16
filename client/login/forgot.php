@@ -15,7 +15,7 @@ if (!empty($_POST['fotgotButton'])) {
         } else {
             // Truy van co so du lieu bang client
             $email = trim($body['email']);
-            $listClient = getRows("SELECT * FROM client WHERE email='$email'");
+            $listClient = checkEmailExit($email);
             if ($listClient < 1) {
                 $errors['email'] = 'Email không tồn tại trong hệ thống, vui lòng kiểm tra lại';
             }

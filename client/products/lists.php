@@ -44,7 +44,7 @@ if (!empty($_GET['page'])) {
  */
 $offset = ($page - 1) * $perPage;
 
-$listAllProduct = getRaw("SELECT * FROM products $filter ORDER BY id DESC LIMIT $offset,$perPage");
+$listAllProduct = clientAllProduct($filter, $offset, $perPage);
 ?>
 <main class="catalog  mb">
 
@@ -62,7 +62,8 @@ $listAllProduct = getRaw("SELECT * FROM products $filter ORDER BY id DESC LIMIT 
             <div class="box_items">
                 <div class="box_items_img">
                     <img src="<?php echo 'uploads/' . $item['image'] ?> ">
-                    <div class="add" href="">ADD TO CART</div>
+                    <div class="add" href=""><a href="?module=cart&action=add&product_id=<?php echo $item['id'] ?>">ADD
+                            TO CART</a></div>
                 </div>
                 <a class="item_name"
                     href="?module=products&action=detail&id=<?php echo $item['id'] ?>"><?php echo $item['name'] ?></a>

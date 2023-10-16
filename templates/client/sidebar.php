@@ -17,17 +17,16 @@ $listSaleProducts = getRaw("SELECT * FROM products ORDER BY view DESC LIMIt 0,10
             <ul>
                 <?php if (!empty($listAllCategory)) :
                     foreach ($listAllCategory as $item) : ?>
-                <li><a href=""><?php echo $item['name'] ?></a></li>
+                        <li><a href="?module=category&action=lists&id=<?php echo $item['id'] ?>"><?php echo $item['name'] ?></a>
+                        </li>
                 <?php endforeach;
                 endif; ?>
             </ul>
         </div>
         <div class="box_search">
-            <form action="?module=products&action=lists" method="POST"
-                style="display: flex; justify-content: space-between;">
+            <form action="?module=products&action=lists" method="POST" style="display: flex; justify-content: space-between;">
                 <input type="text" name="keyword" id="" placeholder="Tên sản phẩm tìm kiếm" class="form-control">
-                <button type="submit" name="keywordButton" value="1"><i
-                        class="fa-solid fa-magnifying-glass"></i></button>
+                <button type="submit" name="keywordButton" value="1"><i class="fa-solid fa-magnifying-glass"></i></button>
 
             </form>
         </div>
@@ -38,11 +37,10 @@ $listSaleProducts = getRaw("SELECT * FROM products ORDER BY view DESC LIMIt 0,10
         <div class="box_content">
             <?php if (!empty($listSaleProducts)) :
                 foreach ($listSaleProducts as $item) : ?>
-            <div class="selling_products" style="width:100%;">
-                <img src="<?php echo _WEB_HOST_ROOT . '/uploads/' . $item['image'] ?>" alt="anh" width="150px"
-                    height="50px">
-                <a href="?module=products&action=detail&id=<?php echo $item['id'] ?>"><?php echo $item['name'] ?></a>
-            </div>
+                    <div class="selling_products" style="width:100%;">
+                        <img src="<?php echo _WEB_HOST_ROOT . '/uploads/' . $item['image'] ?>" alt="anh" width="150px" height="50px">
+                        <a href="?module=products&action=detail&id=<?php echo $item['id'] ?>"><?php echo $item['name'] ?></a>
+                    </div>
             <?php endforeach;
             endif ?>
         </div>

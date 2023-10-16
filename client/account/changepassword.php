@@ -7,7 +7,7 @@ loadLayoutClient('header.php', $data);
 
 if (isLogin()) {
     $clientId = isLogin()['client_id'];
-    $clientDetail = firstRaw("SELECT * FROM client WHERE id=$clientId");
+    $clientDetail = clientDetailAccount($clientId);
     if (!empty($clientDetail)) {
 
         if (!empty($_POST['changepassword'])) {
@@ -109,8 +109,7 @@ if (!empty($clientDetail) && empty($old)) {
 
             <div class="form-group">
                 <label for="">Nhập lại mật khẩu mới</label>
-                <input type="password" class="form-control" name="confirm_password"
-                    placeholder="Nhập lại mật khẩu mới...">
+                <input type="password" class="form-control" name="confirm_password" placeholder="Nhập lại mật khẩu mới...">
                 <p class="error"><?php echo errorData('confirm_password', $error) ?></p>
             </div>
 

@@ -9,7 +9,7 @@ loadLayoutClient('header.php', $data);
 if (!empty($_GET['code'])) {
     $codeId = $_GET['code'];
     if (!empty($codeId)) {
-        $listAllCartDetail = getRaw("SELECT * FROM cart WHERE code_id=$codeId");
+        $listAllCartDetail = cartDetailBill($codeId);
     }
 }
 
@@ -53,17 +53,17 @@ $error = getFlashData('error');
                                 $total += $item['price'] * $item['quantity'];
                                 $totalPrice = $item['price'] * $item['quantity'];
                         ?>
-                        <tr>
-                            <td><?php echo $count; ?></td>
-                            <td><img src="<?php echo _WEB_HOST_ROOT . '/uploads/' . $item['images']; ?>" width="100%">
-                            </td>
-                            <td><?php echo $item['name'] ?></td>
-                            <td><?php echo $item['price'] ?></td>
-                            <td class="text-center">
-                                <?php echo '<button class="px-3 btn btn-success btn-sm" type="button" >' . $item['quantity'] . '</button>' ?>
-                            </td>
-                            <td><?php echo $totalPrice ?></td>
-                        </tr>
+                                <tr>
+                                    <td><?php echo $count; ?></td>
+                                    <td><img src="<?php echo _WEB_HOST_ROOT . '/uploads/' . $item['images']; ?>" width="100%">
+                                    </td>
+                                    <td><?php echo $item['name'] ?></td>
+                                    <td><?php echo $item['price'] ?></td>
+                                    <td class="text-center">
+                                        <?php echo '<button class="px-3 btn btn-success btn-sm" type="button" >' . $item['quantity'] . '</button>' ?>
+                                    </td>
+                                    <td><?php echo $totalPrice ?></td>
+                                </tr>
                         <?php endforeach;
                         endif;  ?>
                     </tbody>

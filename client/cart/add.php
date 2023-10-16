@@ -5,7 +5,7 @@ if (isLogin()) {
     if (!empty($_GET['product_id'])) {
         $productId = $_GET['product_id'];
         // Truy vấn cơ sở dữ liệu tới bảng product
-        $productDetail = firstRaw("SELECT * FROM products WHERE id=$productId");
+        $productDetail = cartProductDetail($productId);
 
         if (!empty($productDetail)) {
             $name = $productDetail['name'];
@@ -38,7 +38,7 @@ if (isLogin()) {
         if (!empty($_GET['id'])) {
             $id = $_GET['id'];
             // Truy vấn cơ sở dữ liệu tới bảng product
-            $productDetail = firstRaw("SELECT * FROM products WHERE id=$id");
+            $productDetail = cartFirstDetail($id);
 
             if (!empty($productDetail)) {
                 $name = $productDetail['name'];

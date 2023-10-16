@@ -9,6 +9,7 @@ require_once '../model/phpmailer/SMTP.php';
 require_once '../model/phpmailer/Exception.php';
 
 require_once '../model/connect.php';
+require_once '../model/selectdata.php';
 require_once '../model/database.php';
 require_once '../model/functions.php';
 require_once '../model/session.php';

@@ -4,7 +4,7 @@ if (isGet()) {
     $token = $body['token'];
 }
 if (!empty($token)) {
-    $clientToken = firstRaw("SELECT * FROM client WHERE token='$token'");
+    $clientToken = clientToken($token);
 
     if (!empty($clientToken)) {
         $dataUpdate = [

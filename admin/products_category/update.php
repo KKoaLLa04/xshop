@@ -8,7 +8,7 @@ if (!empty($_GET['id'])) {
     $id = $_GET['id'];
 
     // Truy vấn cơ sở dữ liệu 
-    $categoryDetail = firstRaw("SELECT * FROM type WHERE id=$id");
+    $categoryDetail = cateDetail($id);
 } else {
     setFlashData('msg', 'Liên kết không tồn tại');
     setFlashData('msg_type', 'danger');
@@ -61,9 +61,6 @@ $error = getFlashData('error');
 if (empty($old) && !empty($categoryDetail)) {
     $old = $categoryDetail;
 }
-echo '<pre>';
-print_r($old);
-echo '</pre>';
 ?>
 <div class="row2">
     <div class="row2 font_title">
@@ -84,7 +81,6 @@ echo '</pre>';
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Cập nhật</button>
-                <button type="button" class="btn btn-warning">Nhập lại</button>
                 <a href="?module=products_category"><button type="button" class="btn btn-success">Danh sách</button></a>
             </div>
             <input type="hidden" name="id" value="<?php echo $id; ?>">

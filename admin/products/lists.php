@@ -50,9 +50,9 @@ if (isGet()) {
 // 1.Số lượng bản ghi / 1 trang
 $perPage = _PER_PAGE;
 // 2.Lấy toàn bộ bản ghi trong db
-$countType = getRows("SELECT id FROM products $filter");
+$countProducts = countProduct($filter);
 // 3.Tính số lượng trang lớn nhất
-$maxPage = ceil($countType / $perPage);
+$maxPage = ceil($countProducts / $perPage);
 // 4.Điều kiện
 $page = 1;
 if (!empty($_GET['page'])) {
@@ -73,13 +73,10 @@ if (!empty($_GET['page'])) {
 $offset = ($page - 1) * $perPage;
 
 // Truy van co so du lieu products
-$listAllProducts = getRaw("SELECT products.*, type.name as type_name FROM products INNER JOIN type ON type.id=products.type_id $filter ORDER BY products.id DESC LIMIT $offset,$perPage");
-
-// Truy van co so du lieu users
-// $listAllUser = getRaw("SELECT * FROM users ORDER BY fullname");
+$listAllProducts = allProducts($filter, $offset, $perPage);
 
 // Truy van co so du lieu type
-$listAllType = getRaw("SELECT * FROM type ORDER BY id DESC");
+$listAllType = allType();
 
 $msg = getFlashData('msg');
 $msg_type = getFlashData('msg_type');
@@ -112,18 +109,16 @@ $msg_type = getFlashData('msg_type');
                         <?php if (!empty($listAllType)) :
                             foreach ($listAllType as $item) :
                         ?>
-                        <option value="<?php echo $item['id'] ?>"
-                            <?php echo (!empty($typeId) && $item['id'] == $typeId) ? 'selected' : false ?>>
-                            <?php echo $item['name'] ?>
-                        </option>
+                                <option value="<?php echo $item['id'] ?>" <?php echo (!empty($typeId) && $item['id'] == $typeId) ? 'selected' : false ?>>
+                                    <?php echo $item['name'] ?>
+                                </option>
                         <?php endforeach;
                         endif ?>
                     </select>
                 </div>
 
                 <div class="col-6">
-                    <input type="search" class="form-control" placeholder="Từ khóa tìm kiếm" name="keyword"
-                        value="<?php echo !empty($keyword) ? $keyword : false ?>">
+                    <input type="search" class="form-control" placeholder="Từ khóa tìm kiếm" name="keyword" value="<?php echo !empty($keyword) ? $keyword : false ?>">
                 </div>
 
                 <div class="col-3">
@@ -152,28 +147,25 @@ $msg_type = getFlashData('msg_type');
             <tbody>
                 <?php if (!empty($listAllProducts)) :
                     foreach ($listAllProducts as $item) : ?>
-                <tr>
-                    <td>00<?php echo $item['id'] ?></td>
-                    <td><?php echo $item['name'] ?> <br> <button class="btn btn-warning btn-sm">Lượt
-                            xem: <?php echo $item['view'] ?></button></td>
-                    <td><?php echo $item['price'] ?> VND</td>
-                    <td><img src="<?php echo _WEB_HOST_ROOT . '/uploads/' . $item['image'] ?>" alt=""></td>
-                    <td><a href="#"><?php echo $item['type_name'] ?></a></td>
-                    <!-- <td><a href="#"><?php echo $item['fullname'] ?></a></td> -->
-                    <td><?php echo ($item['status'] == 1) ? 'Còn hàng' : 'Hết hàng' ?></td>
-                    <td><?php echo !empty($item['create_at']) ? $item['create_at'] : '00:00:00' ?></td>
-                    <td><a href="?module=products&action=update&id=<?php echo $item['id'] ?>"><button
-                                class="btn btn-warning">Sửa <i class="fa fa-edit"></i></button></a></td>
-                    <td><a href="?module=products&action=delete&id=<?php echo $item['id'] ?>"
-                            onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><button class="btn btn-danger">Xóa <i
-                                    class="fa fa-trash-alt"></i></button></a></td>
-                </tr>
+                        <tr>
+                            <td>00<?php echo $item['id'] ?></td>
+                            <td><?php echo $item['name'] ?> <br> <button class="btn btn-warning btn-sm">Lượt
+                                    xem: <?php echo $item['view'] ?></button></td>
+                            <td><?php echo $item['price'] ?> VND</td>
+                            <td><img src="<?php echo _WEB_HOST_ROOT . '/uploads/' . $item['image'] ?>" alt=""></td>
+                            <td><a href="#"><?php echo $item['type_name'] ?></a></td>
+                            <!-- <td><a href="#"><?php echo $item['fullname'] ?></a></td> -->
+                            <td><?php echo ($item['status'] == 1) ? 'Còn hàng' : 'Hết hàng' ?></td>
+                            <td><?php echo !empty($item['create_at']) ? $item['create_at'] : '00:00:00' ?></td>
+                            <td><a href="?module=products&action=update&id=<?php echo $item['id'] ?>"><button class="btn btn-warning">Sửa <i class="fa fa-edit"></i></button></a></td>
+                            <td><a href="?module=products&action=delete&id=<?php echo $item['id'] ?>" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><button class="btn btn-danger">Xóa <i class="fa fa-trash-alt"></i></button></a></td>
+                        </tr>
 
-                <?php endforeach;
+                    <?php endforeach;
                 else : ?>
-                <tr>
-                    <td colspan="10" class="text-center">Không có dữ liệu</td>
-                </tr>
+                    <tr>
+                        <td colspan="10" class="text-center">Không có dữ liệu</td>
+                    </tr>
                 <?php endif; ?>
             </tbody>
         </table>
@@ -183,25 +175,23 @@ $msg_type = getFlashData('msg_type');
                 <?php if ($page > 1) :
                     $prev = $page - 1;
                 ?>
-                <li class="page-item"><a class="page-link" href="?module=products&page=<?php echo $prev ?>">Trước</a>
-                </li>
+                    <li class="page-item"><a class="page-link" href="?module=products&page=<?php echo $prev ?>">Trước</a>
+                    </li>
                 <?php endif; ?>
                 <?php
                 for ($i = 1; $i <= $maxPage; $i++) :
                 ?>
-                <li class="page-item"><a class="page-link"
-                        href="?module=products&page=<?php echo $i ?>"><?php echo $i ?></a></li>
+                    <li class="page-item"><a class="page-link" href="?module=products&page=<?php echo $i ?>"><?php echo $i ?></a></li>
                 <?php endfor; ?>
                 <?php if ($page < $maxPage) :
                     $next = $page + 1;
                 ?>
-                <li class="page-item"><a class="page-link" href="?module=products&page=<?php echo $next ?>">Sau</a></li>
+                    <li class="page-item"><a class="page-link" href="?module=products&page=<?php echo $next ?>">Sau</a></li>
                 <?php endif; ?>
             </ul>
         </nav>
 
-        <a href="?module=products&action=add"><button type="button" class="btn btn-primary btn-sm">Thêm mới <i
-                    class="fa fa-plus"></i></button></a>
+        <a href="?module=products&action=add"><button type="button" class="btn btn-primary btn-sm">Thêm mới <i class="fa fa-plus"></i></button></a>
     </div>
 </div>
 <?php

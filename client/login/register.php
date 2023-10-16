@@ -23,7 +23,7 @@ if (!empty($_POST['registerButton'])) {
         } else {
             // Truy van co so du lieu bang client
             $email = trim($body['email']);
-            $listClient = getRows("SELECT * FROM client WHERE email='$email'");
+            $listClient = checkEmailExit($email);
             if ($listClient > 0) {
                 $errors['email'] = 'Email đã tồn tại, vui lòng thử lại email khác';
             }

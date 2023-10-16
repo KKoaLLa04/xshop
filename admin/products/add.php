@@ -67,7 +67,7 @@ if (isPost()) {
     }
 }
 // Truy van du lieu type
-$listAllType = getRaw("SELECT * FROM type ORDER BY id DESC");
+$listAllType = allType();
 $msg = getFlashData('msg');
 $msg_type = getFlashData('msg_type');
 $old = getFlashData('old');
@@ -139,7 +139,6 @@ $error = getFlashData('error');
 
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Thêm mới</button>
-                <button type="button" class="btn btn-warning">Nhập lại</button>
                 <a href="?module=products"><button type="button" class="btn btn-success">Danh sách</button></a>
             </div>
         </form>
